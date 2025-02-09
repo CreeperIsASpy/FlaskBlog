@@ -8,21 +8,24 @@
 
     <h2>你发布的博文：</h2>
     {% if posts %}
-        <ul>
+        <ul class="post-list">
             {% for post in posts %}
-                <li>
-                    <h3><a href="{{ url_for('main.view_post', post_id=post.id) }}">{{ post.title }}</a></h3>
+                <li class="post-item">
+                    <h3><a href="{{ url_for('main.view_post', post_id=post.id) }}" class="post-link">{{ post.title }}</a></h3>
                     <p>{{ post.content }}</p>
-                    <a href="{{ url_for('main.edit_post', post_id=post.id) }}">编辑</a>
-                    <form action="{{ url_for('main.delete_post', post_id=post.id) }}" method="POST" style="display:inline;">
-                        <button type="submit" onclick="return confirm('确定要删除这篇博文吗？')">删除</button>
-                    </form>
+                    <div class="post-actions">
+                        <button onclick="window.location.href='{{ url_for('main.edit_post', post_id=post.id) }}'" class="action-button edit-button">编辑</button>
+                        <form action="{{ url_for('main.delete_post', post_id=post.id) }}" method="POST" style="display:inline;">
+                            <button type="submit" class="action-button delete-button" onclick="return confirm('确定要删除这篇博文吗？')">删除</button>
+                        </form>
+                    </div>
                 </li>
             {% endfor %}
         </ul>
     {% else %}
-        <p>你还没有发布任何博文。点击下方链接发布你的第一篇博文！</p>
+        <p>你还没有发布任何博文。点击下方按钮发布你的第一篇博文！</p>
     {% endif %}
 
-    <a href="{{ url_for('main.create_post') }}">发布一篇新的博文！</a>
+    <button onclick="window.location.href='{{ url_for('main.create_post') }}'" class="form-button">发布一篇新的博文！</button>
+
 {% endblock %}

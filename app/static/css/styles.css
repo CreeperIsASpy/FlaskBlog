@@ -58,3 +58,252 @@ footer {
     border-left: 5px solid #ff0000;
     margin-bottom: 10px;
 }
+
+.music {
+    border-radius: 5px;
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+}
+
+/* 通用按钮样式 */
+.form-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    margin-top: 20px;
+}
+
+.form-button:hover {
+    background-color: #0056b3;
+}
+
+/* 操作按钮 */
+.action-button {
+    display: inline-block;
+    padding: 8px 16px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+.edit-button {
+    background-color: #007bff;
+    color: white;
+}
+
+.edit-button:hover {
+    background-color: #0056b3;
+}
+
+.delete-button {
+    background-color: #dc3545;
+    color: white;
+}
+
+.delete-button:hover {
+    background-color: #a71d2a;
+}
+
+/* 返回按钮 */
+.back-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    margin-top: 20px;
+}
+
+.back-button:hover {
+    background-color: #5a6268;
+}
+
+/* 认证按钮容器 */
+.auth-buttons {
+    margin-top: 20px;
+}
+
+.auth-buttons .form-button {
+    margin-right: 10px;
+}
+
+/* 表单容器 */
+.post-form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 表单组 */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* 表单标签 */
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* 表单输入框 */
+.form-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* 文本区域 */
+.form-input[type="textarea"] {
+    resize: vertical;
+    min-height: 150px;
+}
+
+/* 表单按钮 */
+.form-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* 返回按钮 */
+.back-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    margin-top: 20px;
+}
+
+.back-button:hover {
+    background-color: #5a6268;
+}
+
+.form-button:hover {
+    background-color: #0056b3;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* 文章容器 */
+.post-container {
+    max-width: 3000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 文章标题 */
+.post-title {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* 文章元信息 */
+.post-meta {
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.post-meta span {
+    margin-right: 10px;
+}
+
+/* 文章内容 */
+.post-content {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #444;
+    margin-bottom: 20px;
+}
+
+/* 操作按钮容器 */
+.post-actions {
+    margin-top: 20px;
+}
+
+/* 操作按钮 */
+.action-button {
+    display: inline-block;
+    padding: 8px 16px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+.edit-button {
+    background-color: #007bff;
+    color: white;
+}
+
+.edit-button:hover {
+    background-color: #0056b3;
+}
+
+.delete-button {
+    background-color: #dc3545;
+    color: white;
+}
+
+.delete-button:hover {
+    background-color: #a71d2a;
+}
+
+/* 返回链接 */
+.back-link {
+    display: inline-block;
+    margin-top: 20px;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}

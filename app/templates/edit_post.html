@@ -4,14 +4,16 @@
 
 {% block content %}
     <h1>编辑博文</h1>
-    <form method="POST" action="{{ url_for('main.edit_post', post_id=post.id) }}">
-        <label for="title">标题:</label>
-        <input type="text" id="title" name="title" value="{{ post.title }}" required>
-
-        <label for="content">内容:</label>
-        <textarea id="content" name="content" rows="10" required>{{ post.content }}</textarea>
-
-        <button type="submit">更新博客文章</button>
+    <form method="POST" action="{{ url_for('main.edit_post', post_id=post.id) }}" class="post-form">
+        <div class="form-group">
+            <label for="title">标题：</label>
+            <input type="text" id="title" name="title" class="form-input" value="{{ post.title }}" required>
+        </div>
+        <div class="form-group">
+            <label for="content">内容：</label>
+            <textarea id="content" name="content" class="form-input" rows="10" required>{{ post.content }}</textarea>
+        </div>
+        <button type="submit" class="form-button">更新</button>
     </form>
-    <a href="{{ url_for('main.view_post', post_id=post.id) }}">Cancel</a>
+    <button onclick="window.location.href='{{ url_for('main.view_post', post_id=post.id) }}';" class="form-button back-button">取消</button>
 {% endblock %}

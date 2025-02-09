@@ -3,12 +3,33 @@
 {% block title %}首页 - 六(5)班 班级博客{% endblock %}
 
 {% block content %}
-    <h1>欢迎来到——六(5)班 班级博客！</h1>
-    {% if current_user.is_authenticated %}
-        <p>您好, {{ current_user.username }}!</p>
+    <h1>欢迎来到六(5)班班级博客！</h1>
+    <p>在这里，你可以阅读同学们的最新博文，也可以发布自己的文章！</p>
+
+    <h2>最新博文精选</h2>
+    {% if posts %}
+        <ul class="post-list">
+            {% for post in posts %}
+                <li class="post-item">
+                    <h3><a href="{{ url_for('main.view_post', post_id=post.id) }}" class="post-link">{{ post.title }}</a></h3>
+                    <p>作者：{{ post.author.username }} | 发布时间：{{ post.created_at.strftime('%Y-%m-%d %T') }}</p>
+                    <p>{{ (post.content[:80] + '...') if (len(post.content) > 80) else post.content }}</p>
+                </li>
+            {% endfor %}
+        </ul>
     {% else %}
-        <p>在开始之前，请先 <a href="{{ url_for('auth.login') }}">登录</a> 或 <a href="{{ url_for('auth.register') }}">注册！</a></p>
+        <p>还没有人发布博文，快来成为第一个吧！</p>
     {% endif %}
-    <h1>最近博文精选</h1>
+
+    {% if current_user.is_authenticated %}
+        <button onclick="window.location.href='{{ url_for('main.create_post') }}'" class="form-button">发布一篇新的博文！</button>
+    {% else %}
+        <div class="auth-buttons">
+            <button onclick="window.location.href='{{ url_for('auth.login') }}'" class="form-button">登录</button>
+            <button onclick="window.location.href='{{ url_for('auth.register') }}'" class="form-button">注册</button>
+        </div>
+    {% endif %}
+
+    <iframe class="music" frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1826335149&auto=1&height=66"></iframe>
 
 {% endblock %}

@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request, url_for, flash
 from flask_login import login_required, current_user
-from sqlmodel import Session, select
+from sqlmodel import Session, select, desc
 from werkzeug.utils import redirect
+from datetime import datetime
 
 from app import engine
 from app.models import Post, User
@@ -12,7 +13,14 @@ main = Blueprint('main', __name__)
 
 @main.route('/')
 def index():
-    return render_template('index.html')
+    with Session(engine) as session:
+        # 查询最新的 10 篇博文，按创建时间倒序排列
+        posts = session.exec(
+            select(Post)
+            .order_by(desc(Post.created_at))
+            .limit(10)
+        ).all()
+        return render_template('index.html', posts=posts, datetime=datetime, len=len)
 
 
 @main.route('/dashboard')
@@ -40,14 +48,14 @@ def create_post():
         content = request.form.get('content')
 
         if not title or not content:
-            flash('Title and content are required!')
+            flash('你必须填写标题和内容字段!')
         else:
             new_post = Post(title=title, content=content, author_id=current_user.id)
             with Session(engine) as session:
                 session.add(new_post)
                 session.commit()
                 print(f"New post created: {new_post}")  # 调试信息
-                flash('Your post has been created!')
+                flash('你成功创建了一篇新的博文!')
             return redirect(url_for('main.dashboard'))
 
     return render_template('create_post.html')
@@ -60,7 +68,7 @@ def view_post(post_id):
         if post:
             return render_template('view_post.html', post=post)
         else:
-            flash('Post not found!')
+            flash('博文未找到！')
             return redirect(url_for('main.index'))
 
 
@@ -70,10 +78,10 @@ def edit_post(post_id):
     with Session(engine) as session:
         post = session.get(Post, post_id)
         if not post:
-            flash('Post not found!')
+            flash('博文未找到!')
             return redirect(url_for('main.dashboard'))
         if post.author_id != current_user.id:
-            flash('You do not have permission to edit this post!')
+            flash('你没有编辑这篇博文的权限!')
             return redirect(url_for('main.dashboard'))
 
         if request.method == 'POST':
@@ -81,12 +89,12 @@ def edit_post(post_id):
             content = request.form.get('content')
 
             if not title or not content:
-                flash('Title and content are required!')
+                flash('你必须填写标题和内容字段!')
             else:
                 post.title = title
                 post.content = content
                 session.commit()
-                flash('Your post has been updated!')
+                flash('你的博文已被更新!')
                 return redirect(url_for('main.view_post', post_id=post.id))
 
         return render_template('edit_post.html', post=post)
@@ -98,13 +106,13 @@ def delete_post(post_id):
     with Session(engine) as session:
         post = session.get(Post, post_id)
         if not post:
-            flash('Post not found!')
+            flash('博文未找到!')
             return redirect(url_for('main.dashboard'))
         if post.author_id != current_user.id:
-            flash('You do not have permission to delete this post!')
+            flash('你没有编辑这篇博文的权限!')
             return redirect(url_for('main.dashboard'))
 
         session.delete(post)
         session.commit()
-        flash('Your post has been deleted!')
+        flash('你的博文已被删除!')
         return redirect(url_for('main.dashboard'))
