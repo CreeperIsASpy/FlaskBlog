@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}创建新的博客文章 - 六(5)班 班级博客{% endblock %}
+
+{% block content %}
+    <h1>创建一篇新的 博客文章</h1>
+    <form method="POST" action="{{ url_for('main.create_post') }}">
+        <div style="position:absolute;left:50px;top:220px;width:300px;height:50px">
+            <label for="title">输入标题:</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+        <div style="position:absolute;left:50px;top:300px;width:300px;height:50px">
+            <label for="content">内容: </label>
+            <textarea style="font-family:serif;font-size:20px" id="content" name="content" rows="16" cols="120" required></textarea>
+        </div>
+        <hr />
+        <button style="position:absolute;left:50px;margin-top:500px;width:250px;height:30px" type="submit">发布！ 该博客文章</button>
+    </form>
+{% endblock %}

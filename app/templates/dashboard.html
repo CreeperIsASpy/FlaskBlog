@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}仪表盘 - 六(5)班 班级博客{% endblock %}
+
+{% block content %}
+    <h1>欢迎来到你的仪表盘，{{ name }}!</h1>
+    <p>在这里你可以管理你已发布的博文，也能进行账号设置！</p>
+
+    <h2>你发布的博文：</h2>
+    {% if posts %}
+        <ul>
+            {% for post in posts %}
+                <li>
+                    <h3><a href="{{ url_for('main.view_post', post_id=post.id) }}">{{ post.title }}</a></h3>
+                    <p>{{ post.content }}</p>
+                    <a href="{{ url_for('main.edit_post', post_id=post.id) }}">编辑</a>
+                    <form action="{{ url_for('main.delete_post', post_id=post.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" onclick="return confirm('确定要删除这篇博文吗？')">删除</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>你还没有发布任何博文。点击下方链接发布你的第一篇博文！</p>
+    {% endif %}
+
+    <a href="{{ url_for('main.create_post') }}">发布一篇新的博文！</a>
+{% endblock %}

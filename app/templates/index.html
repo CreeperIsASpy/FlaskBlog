@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}首页 - 六(5)班 班级博客{% endblock %}
+
+{% block content %}
+    <h1>欢迎来到——六(5)班 班级博客！</h1>
+    {% if current_user.is_authenticated %}
+        <p>您好, {{ current_user.username }}!</p>
+    {% else %}
+        <p>在开始之前，请先 <a href="{{ url_for('auth.login') }}">登录</a> 或 <a href="{{ url_for('auth.register') }}">注册！</a></p>
+    {% endif %}
+    <h1>最近博文精选</h1>
+
+{% endblock %}
