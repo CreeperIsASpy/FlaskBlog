@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}编辑评论 - 六(5)班 班级博客{% endblock %}
+
+{% block content %}
+    <h1>编辑评论</h1>
+    <form method="POST" action="{{ url_for('main.edit_comment', comment_id=comment.id) }}" class="comment-form">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.content(class="form-input", rows=4, placeholder="请输入你的评论...") }}
+        </div>
+        <button type="submit" class="form-button">更新评论</button>
+        <button type="button" onclick="window.location.href='{{ url_for('main.view_post', post_id=comment.post_id) }}'" class="form-button back-button">取消</button>
+    </form>
+{% endblock %}

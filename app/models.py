@@ -10,6 +10,7 @@ class User(SQLModel, table=True):
     password_hash: str
 
     posts: List["Post"] = Relationship(back_populates="author")
+    comments: List["Comment"] = Relationship(back_populates="author")
 
     # Flask-Login 所需的属性和方法
     @property
@@ -36,4 +37,16 @@ class Post(SQLModel, table=True):
     created_at: datetime = Field(default_factory=datetime.utcnow)  # 文章创建时间
 
     author: User = Relationship(back_populates="posts")
+    comments: List["Comment"] = Relationship(back_populates="post")  # 博文的评论
 
+
+class Comment(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    content: str  # 评论内容
+    created_at: datetime = Field(default_factory=datetime.utcnow)  # 评论时间
+    author_id: int = Field(foreign_key="user.id")  # 评论作者
+    post_id: int = Field(foreign_key="post.id")  # 所属博文
+
+    # 关系
+    author: "User" = Relationship(back_populates="comments")
+    post: "Post" = Relationship(back_populates="comments")

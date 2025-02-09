@@ -22,4 +22,48 @@
         {% endif %}
         <button onclick="window.location.href='{{ url_for('main.index') }}';" class="form-button back-button">返回首页</button>
     </div>
+
+<!-- 评论表单 -->
+        <div class="comment-form">
+            <h3>发表评论</h3>
+            <form method="POST" action="{{ url_for('main.add_comment', post_id=post.id) }}">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.content(class="form-input", rows=4, placeholder="请输入你的评论...") }}
+                </div>
+                <button type="submit" class="form-button">提交评论</button>
+            </form>
+        </div>
+
+        <!-- 评论列表 -->
+        <div class="comment-list" style="margin-bottom:80px;">
+            <h3>评论</h3>
+            {% if post.comments %}
+                <ul>
+                {% for comment in post.comments %}
+                <li class="comment-item">
+                    <div class="comment-meta">
+                        <span class="comment-author">{{ comment.author.username }}</span>
+                        <span class="comment-date">{{ comment.created_at }}</span>
+                    </div>
+                    <div class="comment-content">
+                        {{ comment.content }}
+                    </div>
+                    {% if current_user == comment.author %}
+                        <div class="comment-actions">
+                            <button onclick="window.location.href='{{ url_for('main.edit_comment', comment_id=comment.id) }}'" class="action-button edit-button">编辑</button>
+                            <form action="{{ url_for('main.delete_comment', comment_id=comment.id) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="action-button delete-button" onclick="return confirm('确定要删除这条评论吗？')">删除</button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+                <p>还没有人发表评论，快来抢沙发！</p>
+            {% endif %}
+        </div>
+    </div>
+
 {% endblock %}
