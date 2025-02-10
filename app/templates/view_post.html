@@ -10,7 +10,7 @@
             <span class="post-date">发布时间：{{ post.created_at }}</span>
         </div>
         <div class="post-content">
-            {{ post.content }}
+            {{ post.html_content | safe }}
         </div>
         {% if current_user == post.author %}
             <div class="post-actions">
@@ -47,7 +47,7 @@
                         <span class="comment-date">{{ comment.created_at }}</span>
                     </div>
                     <div class="comment-content">
-                        {{ comment.content }}
+                        {{ comment.html_content | safe }}
                     </div>
                     {% if current_user == comment.author %}
                         <div class="comment-actions">

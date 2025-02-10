@@ -32,21 +32,22 @@ class User(SQLModel, table=True):
 class Post(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     title: str
-    content: str
+    content: str  # 原始 Markdown 内容
+    html_content: str  # 解析后的 HTML 内容
     author_id: int = Field(foreign_key="user.id")
-    created_at: datetime = Field(default_factory=datetime.utcnow)  # 文章创建时间
+    created_at: datetime = Field(default_factory=datetime.utcnow)
 
     author: User = Relationship(back_populates="posts")
-    comments: List["Comment"] = Relationship(back_populates="post")  # 博文的评论
+    comments: List["Comment"] = Relationship(back_populates="post")
 
 
 class Comment(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    content: str  # 评论内容
-    created_at: datetime = Field(default_factory=datetime.utcnow)  # 评论时间
-    author_id: int = Field(foreign_key="user.id")  # 评论作者
-    post_id: int = Field(foreign_key="post.id")  # 所属博文
+    content: str  # 原始 Markdown 内容
+    html_content: str  # 解析后的 HTML 内容
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    author_id: int = Field(foreign_key="user.id")
+    post_id: int = Field(foreign_key="post.id")
 
-    # 关系
-    author: "User" = Relationship(back_populates="comments")
-    post: "Post" = Relationship(back_populates="comments")
+    author: User = Relationship(back_populates="comments")
+    post: Post = Relationship(back_populates="comments")

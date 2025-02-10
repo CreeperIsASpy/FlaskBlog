@@ -1,3 +1,4 @@
+import markdown
 from flask import Blueprint, render_template, request, url_for, flash
 from flask_login import login_required, current_user
 from sqlmodel import Session, select, desc
@@ -6,7 +7,7 @@ from datetime import datetime
 
 from app import engine
 from app.models import Post, User, Comment
-from app.forms import CommentForm, EditCommentForm
+from app.forms import CommentForm, EditCommentForm, PostForm
 
 # 创建蓝图
 main = Blueprint('main', __name__)
@@ -44,22 +45,21 @@ def dashboard():
 @main.route('/create_post', methods=['GET', 'POST'])
 @login_required
 def create_post():
-    if request.method == 'POST':
-        title = request.form.get('title')
-        content = request.form.get('content')
-
-        if not title or not content:
-            flash('你必须填写标题和内容字段!')
-        else:
-            new_post = Post(title=title, content=content, author_id=current_user.id)
-            with Session(engine) as session:
-                session.add(new_post)
-                session.commit()
-                print(f"New post created: {new_post}")  # 调试信息
-                flash('你成功创建了一篇新的博文!')
+    form = PostForm()
+    if form.validate_on_submit():
+        html_content = markdown.markdown(form.content.data)  # 解析 Markdown
+        new_post = Post(
+            title=form.title.data,
+            content=form.content.data,
+            html_content=html_content,
+            author_id=current_user.id
+        )
+        with Session(engine) as session:
+            session.add(new_post)
+            session.commit()
+            flash('博文已发布！', 'success')
             return redirect(url_for('main.dashboard'))
-
-    return render_template('create_post.html')
+    return render_template('create_post.html', form=form)
 
 
 @main.route('/post/<int:post_id>')
@@ -78,12 +78,14 @@ def view_post(post_id):
 def add_comment(post_id):
     form = CommentForm()
     if form.validate_on_submit():
+        html_content = markdown.markdown(form.content.data)  # 解析 Markdown
+        new_comment = Comment(
+            content=form.content.data,
+            html_content=html_content,
+            author_id=current_user.id,
+            post_id=post_id
+        )
         with Session(engine) as session:
-            new_comment = Comment(
-                content=form.content.data,
-                author_id=current_user.id,
-                post_id=post_id
-            )
             session.add(new_comment)
             session.commit()
             flash('评论已发布！', 'success')
@@ -111,11 +113,12 @@ def edit_post(post_id):
             else:
                 post.title = title
                 post.content = content
+                post.html_content = markdown.markdown(content)
                 session.commit()
                 flash('你的博文已被更新!')
                 return redirect(url_for('main.view_post', post_id=post.id))
 
-        return render_template('edit_post.html', post=post)
+        return render_template('edit_post.html', post=post, form=CommentForm())
 
 
 @main.route('/delete_post/<int:post_id>', methods=['POST'])
@@ -151,6 +154,7 @@ def edit_comment(comment_id):
         form = EditCommentForm()
         if form.validate_on_submit():
             comment.content = form.content.data
+            comment.html_content = markdown.markdown(form.content.data)  # 解析 Markdown
             session.commit()
             flash('评论已更新！', 'success')
             return redirect(url_for('main.view_post', post_id=comment.post_id))

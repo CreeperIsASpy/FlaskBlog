@@ -2,9 +2,16 @@
 
 {% block title %}发布新博文 - 六(5)班 班级博客{% endblock %}
 
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+{% endblock %}
+
 {% block content %}
     <h1>发布新博文</h1>
     <form method="POST" action="{{ url_for('main.create_post') }}" class="post-form">
+        {{ form.hidden_tag() }}
         <div class="form-group">
             <label for="title">标题：</label>
             <input type="text" id="title" name="title" class="form-input" required>
@@ -15,5 +22,22 @@
         </div>
         <button type="submit" class="form-button">发布</button>
     </form>
-    <button onclick="window.location.href='{{ url_for('main.dashboard') }}';" class="form-button back-button">返回仪表盘</button>
+    <button onclick="window.location.href='{{ url_for('main.dashboard') }}'" class="form-button back-button">返回仪表盘</button>
+
+    <script>
+        // 初始化 SimpleMDE 编辑器
+        const simplemde = new SimpleMDE({
+            element: document.getElementById("content"),
+            spellChecker: false,
+            autosave: {
+                enabled: true,
+                uniqueId: "post-content",
+            },
+        });
+
+        document.querySelector('.post-form').addEventListener('submit', function (e) {
+            const contentTextarea = document.getElementById('content');
+            contentTextarea.value = simplemde.value();  // 将 Markdown 编辑器的内容同步到 textarea
+        });
+    </script>
 {% endblock %}
