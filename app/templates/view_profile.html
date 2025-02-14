@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.username }} 的个人主页 - 六(5)班 班级博客{% endblock %}
+
+{% block content %}
+    <div class="profile-container">
+        <h1>{{ user.username }} 的个人主页</h1>
+        <p>邮箱：{{ user.email }}</p>
+        <p>博文数量：{{ user.posts|length }}</p>
+        <p>粉丝数量：{{ user.followers|length }}</p>
+        <p>关注人数：{{ user.following|length }}</p>
+
+        {% if current_user.id != user.id %}
+            <form action="{{ url_for('main.follow_user', user_id=user.id) }}" method="POST" style="display:inline;">
+                <button type="submit" class="form-button">
+                    {% if is_following %}
+                        🚫 取消关注
+                    {% else %}
+                        ✅ 关注
+                    {% endif %}
+                </button>
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}

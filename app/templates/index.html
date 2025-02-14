@@ -12,13 +12,34 @@
             {% for post in posts %}
                 <li class="post-item">
                     <h3><a href="{{ url_for('main.view_post', post_id=post.id) }}" class="post-link">{{ post.title }}</a></h3>
-                    <p>作者：{{ post.author.username }} | 发布时间：{{ post.created_at.strftime('%Y-%m-%d %T') }}</p>
+                    <p>作者：{{ post.author.username }} | 发布时间：{{ post.created_at.strftime('%Y-%m-%d %T') }} | <em class="hint">Markdown 格式预览不可用……</em></p>
                     <p>{{ (post.content[:80] + '...') if (len(post.content) > 80) else post.content }}</p>
+                    <div class="post-meta">
+                        <span class="like-count">👍 {{ post.likes|length }} 人点赞</span>
+                    </div>
                 </li>
             {% endfor %}
         </ul>
     {% else %}
         <p>还没有人发布博文，快来成为第一个吧！</p>
+    {% endif %}
+
+    <h2>最受欢迎博文</h2>
+    {% if popular_posts %}
+        <ul class="post-list">
+            {% for post in popular_posts %}
+                <li class="post-item">
+                    <h3><a href="{{ url_for('main.view_post', post_id=post.id) }}" class="post-link">{{ post.title }}</a></h3>
+                    <p>作者：{{ post.author.username }} | 发布时间：{{ post.created_at }} | <em class="hint">Markdown 格式预览不可用……</em></p>
+                    <p>{{ (post.content[:80] + '...') if (len(post.content) > 80) else post.content }}</p>
+                    <div class="post-meta">
+                        <span class="like-count">👍 {{ post.likes|length }} 人点赞</span>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>还没有博文被点赞。</p>
     {% endif %}
 
     {% if current_user.is_authenticated %}

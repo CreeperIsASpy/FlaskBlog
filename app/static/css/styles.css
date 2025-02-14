@@ -66,6 +66,11 @@ footer {
     right: 0;
 }
 
+.hint {
+    mso-foreground: #6c757d;
+    opacity: 50%;
+}
+
 /* 通用按钮样式 */
 .form-button {
     display: inline-block;
@@ -301,6 +306,7 @@ footer {
 /* 评论列表 */
 .comment-list {
     margin-top: 40px;
+    margin-bottom: 80px;
 }
 
 .comment-list h3 {
@@ -341,4 +347,53 @@ footer {
 
 .comment-actions .action-button {
     margin-right: 10px;
+}
+
+/* 点赞按钮 */
+.like-button {
+    background-color: #28a745;
+    color: white;
+}
+
+.like-button:hover {
+    background-color: #218838;
+}
+
+/* 点赞数 */
+.like-count {
+    margin-left: 10px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* 错误页面容器 */
+.error-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.error-container h1 {
+    font-size: 2rem;
+    color: #dc3545;
+    margin-bottom: 20px;
+}
+
+.error-container p {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.error-container a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.error-container a:hover {
+    text-decoration: underline;
 }

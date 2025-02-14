@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}服务器错误 - 六(5)班 班级博客{% endblock %}
+
+{% block content %}
+    <div class="error-container">
+        <h1>500 - 服务器内部错误</h1>
+        <p>抱歉，服务器在处理您的请求时发生了内部错误。</p>
+        <p>如果可能，请向服务器的开发者反馈该问题，并提供完整的复现流程。</p>
+        <p>请稍后重试，或返回 <a href="{{ url_for('main.index') }}">首页</a>。</p>
+
+        <p>详细错误信息：</p>
+        <p>{{ error[:80] | safe }}</p>
+    </div>
+{% endblock %}

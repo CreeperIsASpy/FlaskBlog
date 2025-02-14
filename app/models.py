@@ -8,9 +8,11 @@ class User(SQLModel, table=True):
     username: str = Field(index=True)
     email: str = Field(index=True)
     password_hash: str
+    is_admin: bool = Field(default=False)
 
     posts: List["Post"] = Relationship(back_populates="author")
     comments: List["Comment"] = Relationship(back_populates="author")
+    likes: List["Like"] = Relationship(back_populates="user")  # 用户点赞的博文
 
     # Flask-Login 所需的属性和方法
     @property
@@ -39,6 +41,7 @@ class Post(SQLModel, table=True):
 
     author: User = Relationship(back_populates="posts")
     comments: List["Comment"] = Relationship(back_populates="post")
+    likes: List["Like"] = Relationship(back_populates="post")  # 博文的点赞
 
 
 class Comment(SQLModel, table=True):
@@ -51,3 +54,13 @@ class Comment(SQLModel, table=True):
 
     author: User = Relationship(back_populates="comments")
     post: Post = Relationship(back_populates="comments")
+
+
+class Like(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    user_id: int = Field(foreign_key="user.id")  # 点赞用户
+    post_id: int = Field(foreign_key="post.id")  # 被点赞的博文
+
+    # 关系
+    user: "User" = Relationship(back_populates="likes")
+    post: "Post" = Relationship(back_populates="likes")

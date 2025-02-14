@@ -12,7 +12,7 @@
         <div class="post-content">
             {{ post.html_content | safe }}
         </div>
-        {% if current_user == post.author %}
+        {% if current_user == post.author or current_user.is_admin %}
             <div class="post-actions">
                 <a href="{{ url_for('main.edit_post', post_id=post.id) }}" class="action-button edit-button">编辑</a>
                 <form action="{{ url_for('main.delete_post', post_id=post.id) }}" method="POST" style="display:inline;">
@@ -23,23 +23,37 @@
         <button onclick="window.location.href='{{ url_for('main.index') }}';" class="form-button back-button">返回首页</button>
     </div>
 
-<!-- 评论表单 -->
-        <div class="comment-form">
-            <h3>发表评论</h3>
-            <form method="POST" action="{{ url_for('main.add_comment', post_id=post.id) }}">
-                {{ form.hidden_tag() }}
-                <div class="form-group">
-                    {{ form.content(class="form-input", rows=4, placeholder="请输入你的评论...") }}
-                </div>
-                <button type="submit" class="form-button">提交评论</button>
-            </form>
-        </div>
+    <!-- 评论表单 -->
+    <div class="comment-form">
+        <h3>发表评论</h3>
+        <form method="POST" action="{{ url_for('main.add_comment', post_id=post.id) }}">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.content(class="form-input", rows=4, placeholder="请输入你的评论...") }}
+            </div>
+            <button type="submit" class="form-button">提交评论</button>
+        </form>
+    </div>
+
+    <!-- 点赞表单 -->
+    <div class="post-actions">
+    <form action="{{ url_for('main.like_post', post_id=post.id) }}" method="POST" style="display:inline;">
+        <button type="submit" class="action-button like-button">
+            {% if current_user.is_authenticated and current_user in post.likes|map(attribute="user") %}
+                👍 取消点赞
+            {% else %}
+                👍 点赞
+            {% endif %}
+        </button>
+    </form>
+    <span class="like-count">{{ post.likes|length }} 人点赞</span>
+    </div>
 
         <!-- 评论列表 -->
-        <div class="comment-list" style="margin-bottom:80px;">
-            <h3>评论</h3>
-            {% if post.comments %}
-                <ul>
+    <div class="comment-list">
+        <h3>评论</h3>
+        {% if post.comments %}
+            <ul>
                 {% for comment in post.comments %}
                 <li class="comment-item">
                     <div class="comment-meta">
@@ -49,7 +63,7 @@
                     <div class="comment-content">
                         {{ comment.html_content | safe }}
                     </div>
-                    {% if current_user == comment.author %}
+                    {% if current_user == comment.author or current_user.is_admin %}
                         <div class="comment-actions">
                             <button onclick="window.location.href='{{ url_for('main.edit_comment', comment_id=comment.id) }}'" class="action-button edit-button">编辑</button>
                             <form action="{{ url_for('main.delete_comment', comment_id=comment.id) }}" method="POST" style="display:inline;">
@@ -58,12 +72,11 @@
                         </div>
                     {% endif %}
                 </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-                <p>还没有人发表评论，快来抢沙发！</p>
-            {% endif %}
-        </div>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>还没有人发表评论，快来抢沙发！</p>
+        {% endif %}
     </div>
 
 {% endblock %}

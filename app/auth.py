@@ -21,7 +21,7 @@ def login():
                 login_user(user)  # 登录用户
                 return redirect(url_for('main.dashboard'))
             else:
-                flash('Invalid username or password')
+                flash('用户名或密码错误！')
     return render_template('login.html')
 
 
@@ -46,4 +46,5 @@ def register():
 @login_required
 def logout():
     logout_user()
+    flash('你已登出！')
     return redirect(url_for('main.index'))

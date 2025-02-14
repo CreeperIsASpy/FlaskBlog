@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %}Login - My Blog{% endblock %}
+{% block title %}登录 - 六(5)班 班级博客{% endblock %}
 
 {% block content %}
-    <h1>Login</h1>
+    <h1>登录</h1>
     <form method="POST" action="{{ url_for('auth.login') }}">
-        <label for="username">Username:</label>
+        <label for="username">用户名:</label>
         <input type="text" id="username" name="username" required>
 
-        <label for="password">Password:</label>
+        <label for="password">密码:</label>
         <input type="password" id="password" name="password" required>
 
-        <button type="submit">Login</button>
+        <button type="submit">登录！</button>
     </form>
-    <p>Don't have an account? <a href="{{ url_for('auth.register') }}">Register here</a>.</p>
+    <p>还没有账户? 点击<a href="{{ url_for('auth.register') }}">这里</a>来注册! </p>
 {% endblock %}
