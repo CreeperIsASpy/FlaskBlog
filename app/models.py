@@ -1,6 +1,22 @@
 from datetime import datetime
-from sqlmodel import SQLModel, Field, Relationship
+from sqlmodel import SQLModel, Field, Relationship, create_engine
 from typing import Optional, List
+
+engine: Optional[any] = None  # 共享的数据库引擎
+
+
+def init_db_engine(uri: str):
+    """
+    根据配置创建数据库引擎，并赋值给全局的 engine 变量。
+    这个函数只在 create_app 中被调用一次。
+    """
+    global engine
+
+    # 2. 在这里可以添加更多 create_engine 的参数，比如连接池设置
+    engine = create_engine(
+        uri,
+        echo=False,  # 建议在生产中设为 False，否则会输出 SQL 语句
+    )
 
 
 class User(SQLModel, table=True):

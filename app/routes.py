@@ -1,14 +1,13 @@
 import markdown
-from flask import Blueprint, render_template, request, url_for, flash
+from flask import Blueprint, render_template, request, url_for, flash, current_app
 from flask_login import login_required, current_user
 from sqlalchemy import func
 from sqlmodel import Session, select, desc
 from werkzeug.utils import redirect
 from datetime import datetime
 
-from app import engine, app, mail
 from app.md_processor import CustomMarkdownExtension
-from app.models import Post, User, Comment, Like
+from app.models import Post, User, Comment, Like, engine
 from app.forms import CommentForm, EditCommentForm, PostForm
 
 # 创建蓝图
@@ -228,12 +227,9 @@ def like_post(post_id):
         return redirect(url_for('main.view_post', post_id=post_id))
 
 
-@app.errorhandler(404)
 def page_not_found(error):
     return render_template('404.html'), 404
 
 
-@app.errorhandler(500)
 def internal_server_error(error):
     return render_template('500.html', error=error), 500
-
