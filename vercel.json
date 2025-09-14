@@ -1,5 +1,12 @@
 {
+  "version": 2,
   "builds": [
+    {
+      "use": "@vercel/static-build",
+      "config": {
+        "command": "pip install -r requirements.txt && flask init-db"
+      }
+    },
     {
       "src": "index.py",
       "use": "@vercel/python"
