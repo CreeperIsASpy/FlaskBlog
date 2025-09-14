@@ -7,3 +7,4 @@ SQLAlchemy~=2.0.38
 WTForms~=3.0.1
 markdown~=3.4.4
 psycopg
+psycopg2-binary
