@@ -2,10 +2,10 @@
   "version": 2,
   "builds": [
     {
-      "src": "requirements.txt",
-      "use": "@vercel/static-build",
+      "src": "build.sh",
+      "use": "@vercel/python",
       "config": {
-        "command": "pip install -r requirements.txt && flask init-db"
+        "command": "bash build.sh"
       }
     },
     {
